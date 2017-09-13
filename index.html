@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <link href="style/jquery-ui.css" rel="stylesheet">
+        <link href="style/style.css" rel="stylesheet">
+
+        <script src="./scripts/jquery-3.2.1.js"></script>
+        <script src="scripts/jquery-ui.js"></script>
+    </head>
+    <body>
+        <p>Active</p>
+        <div id="active" class="active list"></div>
+
+        <p>Backlog</p>
+        <div id="backlog" class="backlog list"></div>
+
+        <p>Icebox</p>
+        <div id="icebox" class="icebox list"></div>
+
+        <script>
+
+// just mocking around
+var items = [
+    {title:"test task1 - gets to you today", category:"active"},
+    {title:"test task2 - I'll do it soon", category:"backlog"},
+    {title:"test task3 - breezing freeze", category:"icebox"}
+];
+
+$(document).ready(function () {
+    $("div#active").sortable({connectWith: "div#backlog,div#icebox"});
+    $("div#backlog").sortable({connectWith: "div#active,div#icebox"});
+    $("div#icebox").sortable({connectWith: "div#active,div#backlog"});
+
+    for (var i = 0; i < items.length; i++) {
+        $("div#"+items[i].category).append(getItemHtml(i));
+    }
+});
+
+function getItemHtml(i) {
+    return "<div><span>" + items[i].title + "</span>&nbsp;<span id='item" + i + "'>x</span></div>";
+}
+
+        </script>
+    </body>
+</html>

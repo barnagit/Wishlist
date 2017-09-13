@@ -1,0 +1,17 @@
+div.list {
+    min-height: 12px;
+}
+
+div.active {
+    background-color: lightgreen;
+}
+div.backlog {
+    background-color: lightblue;
+}
+div.icebox {
+    background-color: lightgrey;
+    color: grey;
+}
+.hiddenEditor {
+    display: none;
+}
