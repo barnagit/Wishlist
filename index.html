@@ -6,6 +6,10 @@
 
         <script src="./scripts/jquery-3.2.1.js"></script>
         <script src="scripts/jquery-ui.js"></script>
+
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js"></script>
+
     </head>
     <body>
         <p>Active</p>
@@ -19,11 +23,14 @@
 
         <script>
 
+// jqueryui editable plugin in pop-up mode does not work with this jquery ui version
+$.fn.editable.defaults.mode = 'inline';
+
 // just mocking around
 var items = [
-    {title:"test task1 - gets to you today", category:"active"},
-    {title:"test task2 - I'll do it soon", category:"backlog"},
-    {title:"test task3 - breezing freeze", category:"icebox"}
+    {id: 1, title:"test task1 - gets to you today", category:"active"},
+    {id: 2, title:"test task2 - I'll do it soon", category:"backlog"},
+    {id: 3, title:"test task3 - breezing freeze", category:"icebox"}
 ];
 
 $(document).ready(function () {
@@ -33,11 +40,13 @@ $(document).ready(function () {
 
     for (var i = 0; i < items.length; i++) {
         $("div#"+items[i].category).append(getItemHtml(i));
+        $('#edit_item_'+items[i].id).editable();
     }
 });
 
 function getItemHtml(i) {
-    return "<div><span>" + items[i].title + "</span>&nbsp;<span id='item" + i + "'>x</span></div>";
+    return "<div><span id='edit_item_"+ items[i].id +"' data-type='text'>" + items[i].title
+        + "</span>&nbsp;<span id='remove_item_" + items[i].id + "'>x</span></div>";
 }
 
         </script>
