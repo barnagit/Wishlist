@@ -28,16 +28,32 @@ $.fn.editable.defaults.mode = 'inline';
 
 // just mocking around
 var items = [
-    {id: 1, title:"test task1 - gets to you today", category:"active"},
-    {id: 2, title:"test task2 - I'll do it soon", category:"backlog"},
-    {id: 3, title:"test task3 - breezing freeze", category:"icebox"},
-    {id: 4, title:"test task4 - get ur ass around", category:"backlog"}
+    {id: 1, title:"test task1 - gets to you today", category:"active", pos: 0},
+    {id: 2, title:"test task2 - I'll do it soon", category:"backlog", pos: 2},
+    {id: 3, title:"test task3 - breezing freeze", category:"icebox", pos: 3},
+    {id: 4, title:"test task4 - get ur ass around", category:"backlog", pos: 1}
 ];
 
+items.sort(function(a,b){return a.pos > b.pos});
+
 $(document).ready(function () {
-    $("div#active").sortable({connectWith: "div#backlog,div#icebox"});
-    $("div#backlog").sortable({connectWith: "div#active,div#icebox"});
-    $("div#icebox").sortable({connectWith: "div#active,div#backlog"});
+    $("div#active").sortable({
+        connectWith: "div#backlog,div#icebox",
+        axis:"y",
+        stop: reOrder
+    });
+
+    $("div#backlog").sortable({
+        connectWith: "div#active,div#icebox",
+        axis:"y",
+        stop: reOrder
+    });
+
+    $("div#icebox").sortable({
+        connectWith: "div#active,div#backlog",
+        axis:"y",
+        stop: reOrder
+    });
 
     for (var i = 0; i < items.length; i++) {
         $("div#"+items[i].category).append(getItemHtml(i));
@@ -48,13 +64,20 @@ $(document).ready(function () {
                 return function(response, value) {
                     item.title = value;
                 }
-            }()
+            }(),
         });
     }
 });
 
+function reOrder() {
+    $('.todo_item').each(function(i) {
+        var item_id = $(this).data('id');
+           items.find(function(el){return el.id == item_id}).pos = i;
+    });
+}
+
 function getItemHtml(i) {
-    return "<div><span id='edit_item_"+ items[i].id +"'>" + items[i].title
+    return "<div data-id='"+items[i].id+"' class='todo_item'><span id='edit_item_"+ items[i].id +"'>" + items[i].title
         + "</span>&nbsp;<span id='remove_item_" + items[i].id + "'>x</span></div>";
 }
 
