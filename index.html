@@ -40,19 +40,19 @@ $(document).ready(function () {
     $("div#active").sortable({
         connectWith: "div#backlog,div#icebox",
         axis:"y",
-        stop: reOrder
+        stop: updateData
     });
 
     $("div#backlog").sortable({
         connectWith: "div#active,div#icebox",
         axis:"y",
-        stop: reOrder
+        stop: updateData
     });
 
     $("div#icebox").sortable({
         connectWith: "div#active,div#backlog",
         axis:"y",
-        stop: reOrder
+        stop: updateData
     });
 
     for (var i = 0; i < items.length; i++) {
@@ -69,10 +69,20 @@ $(document).ready(function () {
     }
 });
 
-function reOrder() {
+function updateData() {
     $('.todo_item').each(function(i) {
         var item_id = $(this).data('id');
-           items.find(function(el){return el.id == item_id}).pos = i;
+        items.find(function(el){return el.id == item_id}).pos = i;
+    });
+
+    $("div#active").children().each(function(i, el){
+        items.find(function(el2){return $(el).data('id') == el2.id}).category = "active";
+    });
+    $("div#backlog").children().each(function(i, el){
+        items.find(function(el2){return $(el).data('id') == el2.id}).category = "backlog";
+    });
+    $("div#icebox").children().each(function(i, el){
+        items.find(function(el2){return $(el).data('id') == el2.id}).category = "icebox";
     });
 }
 
