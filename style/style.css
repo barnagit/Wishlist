@@ -12,6 +12,18 @@ div.icebox {
     background-color: lightgrey;
     color: grey;
 }
-.hiddenEditor {
+.hiddeneditor {
     display: none;
+}
+
+.editor {
+    padding-bottom: 10px;
+}
+
+.highlightonclick {
+    background-color: orange;
+}
+
+a:hover.mybutton {
+    font-weight: bold;
 }
