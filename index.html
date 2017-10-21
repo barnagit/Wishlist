@@ -90,6 +90,7 @@ $(document).ready(function () {
         }
 
         $("div#newtask").toggleClass("hiddeneditor");
+        $("a#addnewtask").toggleClass("highlightonclick");
 
         items.push({id: new_id, title:newtasktitle, category:"icebox", pos: max_pos});
         createData(items.length-1);
