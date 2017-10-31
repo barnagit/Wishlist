@@ -70,33 +70,40 @@ $(document).ready(function () {
         $("div#newtask").toggleClass("hiddeneditor");
     });
 
-    $("a#addthistask").on("click", function(event){
-        event.stopPropagation();
-
-        var newtasktitle = $("#newtasktitle").val();
-        if (!newtasktitle) return;
-        
-        $("#newtasktitle").val("");
-
-        var max_pos = 0;
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].category == "icebox" && items[i].pos >= max_pos) max_pos = items[i].pos + 1;
-        }
-
-        //the new_id should be replaced by a server call
-        var new_id = 0;
-        for (var i = 0; i < items.length; i++) {
-            if (items[i].id >= new_id) new_id = items[i].id+1;
-        }
-
-        $("div#newtask").toggleClass("hiddeneditor");
-        $("a#addnewtask").toggleClass("highlightonclick");
-
-        items.push({id: new_id, title:newtasktitle, category:"icebox", pos: max_pos});
-        createData(items.length-1);
-        updateData();
-    });
+    $("a#addthistask").on("click", addNewTask);
+    $("input#newtasktitle").on("keypress", addNewTask);
 });
+
+function addNewTask(event) {
+    console.log(typeof event.keyCode);
+    console.log(event.keyCode);
+
+    if (typeof event.keyCode != 'undefined' && event.keyCode != 13) return;
+    event.stopPropagation();
+
+    var newtasktitle = $("#newtasktitle").val();
+    if (!newtasktitle) return;
+    
+    $("#newtasktitle").val("");
+
+    var max_pos = 0;
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].category == "icebox" && items[i].pos >= max_pos) max_pos = items[i].pos + 1;
+    }
+
+    //the new_id should be replaced by a server call
+    var new_id = 0;
+    for (var i = 0; i < items.length; i++) {
+        if (items[i].id >= new_id) new_id = items[i].id+1;
+    }
+
+    $("div#newtask").toggleClass("hiddeneditor");
+    $("a#addnewtask").toggleClass("highlightonclick");
+
+    items.push({id: new_id, title:newtasktitle, category:"icebox", pos: max_pos});
+    createData(items.length-1);
+    updateData();
+}
 
 function createData(i) {
     $("div#"+items[i].category).append(getItemHtml(i));
