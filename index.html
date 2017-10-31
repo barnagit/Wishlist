@@ -75,8 +75,6 @@ $(document).ready(function () {
 });
 
 function addNewTask(event) {
-    console.log(typeof event.keyCode);
-    console.log(event.keyCode);
 
     if (typeof event.keyCode != 'undefined' && event.keyCode != 13) return;
     event.stopPropagation();
